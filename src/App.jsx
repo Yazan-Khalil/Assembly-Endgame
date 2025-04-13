@@ -27,10 +27,10 @@ function App() {
 	const lossSound = useRef(null);
 
 	useEffect(() => {
-		correctSound.current = new Audio("sounds/correct-answer.wav");
-		wrongSound.current = new Audio("sounds/wrong-answer.mp3");
-		winSound.current = new Audio("sounds/win.mp3");
-		lossSound.current = new Audio("sounds/loss.mp3");
+		correctSound.current = new Audio("/sounds/correct-answer.wav");
+		wrongSound.current = new Audio("/sounds/wrong-answer.mp3");
+		winSound.current = new Audio("/sounds/win.mp3");
+		lossSound.current = new Audio("/sounds/loss.mp3");
 		
 		correctSound.current.volume = 0.2;
 		wrongSound.current.volume = 0.5;
