@@ -137,6 +137,7 @@ function App() {
 	function newGame() {
 		setCurrentWord(generateRandomWord());
 		setGuessedLetters([]);
+		document.activeElement.blur();
 	}
 
 	return (
