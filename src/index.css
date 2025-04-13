@@ -93,6 +93,11 @@ button {
 	cursor: pointer;
 }
 
+button.blocked {
+	pointer-events: none;
+	opacity: 0.5; /* optional to indicate it's inactive */
+}
+
 .languages {
 	display: flex;
 	justify-content: center;
@@ -155,6 +160,10 @@ button {
 
 .word-letter.missed {
 	color: red;
+}
+
+.word-letter.hidden {
+	opacity: 0;
 }
 
 .keyboard {

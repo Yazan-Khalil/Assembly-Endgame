@@ -10,6 +10,8 @@ function App() {
 		window.scrollTo(0, 1);
     }, []);
 
+	const [isGameStarted, setIsGameStarted] = useState(false);
+
 	const alphabet = "abcdefghijklmnopqrstuvwxyz";
 	const [currentWord, setCurrentWord] = useState(() => generateRandomWord());
 	const currentWordArray = currentWord.split("");
@@ -53,7 +55,7 @@ function App() {
 			inGameSoundRef.current.pause();
 			setTimeout(() => {
 				inGameSoundRef.current.play();
-			}, 4300);
+			}, 4000);
 		}
 
 	}, [isGameOver]);
@@ -109,7 +111,12 @@ function App() {
 			currentWordArray.map((letter, index) => 
 			<span 
 				key={index}
-				className={`word-letter ${isGameOver && !guessedLetters.includes(letter)? "missed": ""}`}>
+				className={
+					`word-letter 
+					${isGameOver && !guessedLetters.includes(letter)? "missed": ""}
+					${!isGameStarted? "hidden": ""}
+					`
+				}>
 				{
 				guessedLetters.includes(letter) || isGameOver? 
 					letter.toUpperCase()
@@ -122,7 +129,7 @@ function App() {
 	const newGameRef = useRef(null);
 	useEffect(() => {
 		function handleEnter(event) {
-			if(event.key === "Enter" && isGameOver) {
+			if(event.key === "Enter" && (isGameOver || !isGameStarted)) {
 				newGameRef.current?.click();
 			}
 		}
@@ -132,9 +139,12 @@ function App() {
 		return () => {
 			window.removeEventListener("keydown", handleEnter);
 		};
-	}, [isGameOver]);	
+	}, [isGameOver, isGameStarted]);	
 
 	function newGame() {
+		setIsGameStarted(true);
+		
+		inGameSoundRef.current.play();
 		setCurrentWord(generateRandomWord());
 		setGuessedLetters([]);
 		document.activeElement.blur();
@@ -190,6 +200,7 @@ function App() {
 				{generateKeyboradLetters().map(letterObj => 
 					<KeyboardKey 
 						key={letterObj.value}
+						isGameStarted={isGameStarted}
 						letter={letterObj.value}
 						guessed={letterObj.guessed}
 						correct={letterObj.correct}
@@ -198,8 +209,8 @@ function App() {
 				)}
 			</section>
 
-			<button className={`new-game ${isGameOver? "show": ""}`} onClick={newGame} ref={newGameRef}>
-				New Game
+			<button className={`new-game ${isGameOver || !isGameStarted? "show": ""}`} onClick={newGame} ref={newGameRef}>
+				{isGameStarted? "New Game": "Start Game"} 
 			</button>
 		</main>
 	)

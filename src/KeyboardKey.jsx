@@ -6,14 +6,14 @@ function KeyboardKey(props) {
 
     useEffect(() => {
         const handleKeyDown = function(event) {
-            if(event.key === props.letter) {
+            if(event.key === props.letter && props.isGameStarted) {
                 keyRef.current?.click();
                 setKeyDown(true);
             }
         }
 
         const handleKeyUp = function(event) {
-            if(event.key === props.letter) {
+            if(event.key === props.letter && props.isGameStarted) {
                 setKeyDown(false);
             }
         }
@@ -25,7 +25,7 @@ function KeyboardKey(props) {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, [props.letter]);
+    }, [props.letter, props.isGameStarted]);
 
     return (
         <button
@@ -36,6 +36,7 @@ function KeyboardKey(props) {
 
 			className={
                 `alpha-letter 
+                ${props.isGameStarted? "": "blocked"}
                 ${props.guessed? "guessed": ""}
                 ${props.correct? "correct": "wrong"}
                 ${keyDown? "pressed": ""}`
